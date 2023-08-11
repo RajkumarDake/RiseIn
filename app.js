@@ -29,7 +29,7 @@ const reviewRoutes=require('./routes/reviews');
 
 const MongoDBStore = require("connect-mongo")(session); 
 
-const dbUrl=process.env.DB_URL || 'mongodb+srv://rajkumardakey831:7muoWTiBbWZwDLC4@cluster0.vn2vene.mongodb.net/';
+const dbUrl=process.env.DB_URL || 'mongodb+srv://rajkumardakey831:70sDingKsEHSgMaS@cluster0.fa1jwdn.mongodb.net/';
 mongoose.connect(dbUrl,{
     useNewUrlParser: true,
     useCreateIndex: true,
