@@ -1,3 +1,23 @@
-/* body{
-    background-image: linear-gradient(#bdc3c7, #2c3e50);
-} */
+body{
+    /* background-image: linear-gradient(90deg, #565656, #000000); */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* color:white; */
+}
+.riseinn-heading-container{
+    text-align: center;
+}
+.navbar{
+    /* background-image: linear-gradient(90deg, #565656, #000000); */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* color:white; */
+}
+.nav-link{
+    color:rgb(255, 255, 255) !important;
+    transition-duration: 0.25s;
+}
+
+.nav-link:hover{
+    color:#53534d  !important;
+}
