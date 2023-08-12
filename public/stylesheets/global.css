@@ -1,8 +1,7 @@
 body{
-    /* background-image: linear-gradient(90deg, #565656, #000000); */
-    background-repeat: no-repeat;
+    background-image: url("body-bg.jpg");
+        background-repeat: no-repeat;
     background-attachment: fixed;
-    /* color:white; */
 }
 .riseinn-heading-container{
     text-align: center;
@@ -21,3 +20,45 @@ body{
 .nav-link:hover{
     color:#53534d  !important;
 }
+ 
+  .card {
+    color: white;
+    background-image: linear-gradient(90deg, #aaaeb6, #3c8fbc);
+    margin-top: 50px;
+    box-shadow: 0 0 30px black;
+    border-radius: 20px;
+    overflow: hidden;
+ /* Adjust the height as needed */
+    background-color: linear; /* Replace with the actual path to your image */
+    background-size: cover;
+    background-position: center;
+  }
+#box-link1,#box-link2,#box-link3{
+    background-image: linear-gradient(90deg, #aaaeb6, #3c8fbc);
+}
+.cluster-map{
+width: 500px;
+height: 300px;
+}
+#text-in-show-page{
+       text-align: center;
+       
+}
+#leave-a-review{
+    text-align: center;
+    margin-top: 20px;
+}
+#show-button{
+    background-color: white;
+    color: #3c8fbc;
+    border: 2px solid #3c8fbc;
+    box-shadow: 0 0 5px #3c8fbc;
+    padding: 10px;
+    border-radius: 17px;;
+}
+#show-button:hover{
+    
+    background-image: linear-gradient(180deg, #ffffff, #3c8fbc);
+    color: #ffffff;
+}
+

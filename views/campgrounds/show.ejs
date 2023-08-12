@@ -29,9 +29,9 @@
                 <p class="card-text"><%= campground.description %></p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item text-muted"><%= campground.location%></li>
-                <li class="list-group-item">Submitted by <%= campground.author.username%></li>
-                <li class="list-group-item">₹<%= campground.price%>/day</li>
+                <li class="list-group-item text-muted" id="box-link1"><%= campground.location%></li>
+                <li class="list-group-item" id="box-link2">Submitted by <%= campground.author.username%></li>
+                <li class="list-group-item" id="box-link3">₹<%= campground.price%>/day</li>
             </ul>
             <% if(currentUser && campground.author.equals(currentUser._id)) {%> 
             <div class="card-body">
@@ -49,7 +49,7 @@
     <div class="col-6">
         <div id='map'></div>
         <% if(currentUser){ %> 
-        <h2>Leave a review</h2>
+        <h2 id="leave-a-review">Leave a review</h2>
         <form action="/campgrounds/<%=campground._id%>/reviews" class="mb-3 validated-form" method="POST" novalidate>
             <!-- <div class="mb-3">
                 <label for="rating" class="form-label">Rating</label>
@@ -79,9 +79,9 @@
             <button type="submit" class="btn btn-success mb-3">Submit</button>
         </form>
         <% } %> 
-        
+        <h2 id="text-in-show-page">Previous Reviews</h2>
         <% for(let review of campground.reviews){ %>
-            <div class="card mb-3">
+            <div class="card my-4">
             <div class=" card-body">
                 <h5 class="card-title"><%= review.author.username  %></h5>
                 <p class="starability-result" data-rating="<%= review.rating %>">
