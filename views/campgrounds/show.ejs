@@ -1,0 +1,164 @@
+<% layout('layouts/boilerplate') %> 
+<link rel="stylesheet" href="/stylesheets/stars.css">
+<link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+git config --global user.name "your_username"<div class="row">
+    <div class="col-6">
+        <div id="campgroundCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+            <% campground.images.forEach((img,i) =>{ %>
+              <div class="carousel-item <%= i===0?'active':'' %>">
+                <img src="<%= img.url %>" class="d-block w-100" style="height: 60vh;" alt="">
+              </div>
+            <% }) %> 
+            </div>
+            <% if(campground.images.length>1){ %> 
+                <a class="carousel-control-prev" href="#campgroundCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#campgroundCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            <% } %> 
+          </div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><%= campground.title%></h5>
+                <p class="card-text"><%= campground.description %></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted" id="box-link1"><%= campground.location%></li>
+                <li class="list-group-item" id="box-link2">Submitted by <%= campground.author.username%></li>
+                <li class="list-group-item" id="box-link3">₹<%= campground.price%>/day</li>
+            </ul>
+            <% if(currentUser && campground.author.equals(currentUser._id)) {%> 
+            <div class="card-body">
+                <a href="/campgrounds/<%= campground._id %>/edit" class="card-link btn btn-info">Edit</a>
+                <form class="d-inline"  action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post">
+                    <button class="btn btn-danger" type="submit">delete</button>
+                </form>
+            </div>
+            <% } %> 
+            <div class="card-footer text-muted"> 2 days ago</div>
+        </div>
+    </div>
+
+
+    <div class="col-6">
+        <div id='map'></div>
+        <div class="ratings mb-3 card" style="padding: 2em;">
+            <div id="parent1">
+                <i class="star star-under fa fa-star">
+                <i class="star star-over fa fa-star star-visible" style="<%= starArray[0] %>"></i>
+              </i>
+              <i class="star star-under fa fa-star">
+                <i class="star star-over fa fa-star star-visible" style="<%= starArray[1] %>"></i>
+              </i>
+              <i class="star star-under fa fa-star">
+                <i class="star star-over fa fa-star star-visible" style="<%= starArray[2] %>"></i>
+              </i>
+              <i class="star star-under fa fa-star">
+                <i class="star star-over fa fa-star star-visible" style="<%= starArray[3] %>"></i>
+              </i> 
+              <i class="star star-under fa fa-star">
+                <i class="star star-over fa fa-star star-visible" style="<%= starArray[4] %>"></i>
+                  </i>
+            </div>
+            <span  style="font-size: 1.1em; color: white;">
+                <%= avgRating %> stars and <%= campground.reviews.length %> ratings
+                <br>
+                RiseInn Score: <%= avgSentiment %>  
+            </span>
+        </div>
+        <% if(currentUser){ %> 
+        <h2 id="leave-a-review">Leave a review</h2>
+        <form action="/campgrounds/<%=campground._id%>/reviews" class="mb-3 validated-form" method="POST" novalidate>
+            <!-- <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <input type="range" class="form-range"  min="1" max="5" name="review[rating]" id="rating">
+            </div> -->
+            <div class="mb-3">
+            <fieldset class="starability-basic">
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+              </fieldset>
+            </div>
+            <div class="mb-3">
+                <label for="body" class="form-label">Review text</label>
+                <textarea name="review[body]" id="body" class="form-control" cols="30" rows="3" required></textarea>
+                <div class="valid-feedback">looks good!</div>
+                <div class="invalid-feedback">Can't submit empty review!</div>
+            </div>
+            <button type="submit" class="btn btn-success mb-3">Submit</button>
+        </form>
+        <% } %> 
+        <h2 id="text-in-show-page">Previous Reviews</h2>
+        <% for(let i = 0; i < campground.reviews.length; i ++){ %>
+            <div class="mb-3 card ">
+                <div class="card-body">
+                    <h5 class="card-subtitle mb-2 text-muted"> <%= campground.reviews[i].author.username %></h5>
+                    <p class="starability-result" data-rating="<%=campground.reviews[i].rating%>">
+                        Rated: <%= campground.reviews[i].rating %> stars
+                    </p>
+                    <p class="card-text">  <%= campground.reviews[i].body %> </p>
+                    <p class="text-muted">Sentiment Score: <%= sentimentArray[i] %></p>
+                    <% if(campground.reviews[i].rating <= 2 && sentimentArray[i] >=80) {%>
+                        <p class="text-danger">Potentially misleading review ! 
+                            <button type="button" class="btn " data-toggle="modal" data-target="#exampleModal">
+                                <!-- Info button icon svg -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#892323" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                                
+                            </button>
+                            <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Potentially misleading review</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      A misalignment exists between the star rating and sentiment of the review as examined by our machine learning model. <br>
+                                      Viewers should be cautious, as such inaccuracies can lead to misguided decisions. 
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </p>
+                    <% } %>
+                    <% if(currentUser && campground.reviews[i].author.equals(currentUser)) {%>
+                    <form action="/campgrounds/<%= campground._id%>/reviews/<%= campground.reviews[i]._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+            <% } %>
+    </div>
+</div>
+
+<script>
+    const mapToken= '<%-process.env.MAPBOX_TOKEN%>' ; //we will use this in showPageMap.js javascript file since ejs dont work in javacript file we r saving it in variable mapToken here only
+    const campground= <%-JSON.stringify(campground)%>;  // just camground will give syntax error as few things ex id will not be a valid javacript  so we need to do JSON.stringify to get rid of that
+</script> 
+<!-- //we need it before the below script runs which will be using this mapToken variable -->
+
+<script src="/javascripts/showPageMap.js"></script> 
